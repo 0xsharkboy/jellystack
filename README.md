@@ -97,10 +97,6 @@ This stack builds on the work of many amazing open-source projects:
 
 Special thanks to the contributors and communities behind these projects.
 
-## License
-
-MIT
-
 ---
 
 Built with love and torrents.
