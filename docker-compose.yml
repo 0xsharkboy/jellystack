@@ -14,10 +14,9 @@ services:
     image: lscr.io/linuxserver/qbittorrent
     container_name: qbittorrent
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=Europe/Paris
       - WEBUI_PORT=8888
+    env_file:
+      - .env
     volumes:
       - ./qbittorrent:/config
       - ./media/downloads:/downloads
@@ -30,10 +29,8 @@ services:
   sonarr:
     image: lscr.io/linuxserver/sonarr
     container_name: sonarr
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=Europe/Paris
+    env_file:
+      - .env
     volumes:
       - ./sonarr:/config
       - ./media/tv:/tv
@@ -45,10 +42,8 @@ services:
   radarr:
     image: lscr.io/linuxserver/radarr
     container_name: radarr
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=Europe/Paris
+    env_file:
+      - .env
     volumes:
       - ./radarr:/config
       - ./media/movies:/movies
@@ -60,10 +55,8 @@ services:
   prowlarr:
     image: lscr.io/linuxserver/prowlarr
     container_name: prowlarr
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=Europe/Paris
+    env_file:
+      - .env
     volumes:
       - ./prowlarr:/config
     ports:
@@ -73,10 +66,8 @@ services:
   bazarr:
     image: lscr.io/linuxserver/bazarr
     container_name: bazarr
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=Europe/Paris
+    env_file:
+      - .env
     volumes:
       - ./bazarr:/config
       - ./media/movies:/movies
