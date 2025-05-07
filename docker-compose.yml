@@ -79,9 +79,9 @@ services:
   i2pd:
     image: purplei2p/i2pd
     container_name: i2pd
-    restart: unless-stopped
-    ports:
-      - "7656:7656"
     volumes:
       - ./i2pd:/var/lib/i2pd
       - ./i2pd/i2pd.conf:/etc/i2pd/i2pd.conf:ro
+    ports:
+      - "7656:7656"
+    restart: unless-stopped
