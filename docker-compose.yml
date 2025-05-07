@@ -1,0 +1,86 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    volumes:
+      - ./jellyfin:/config
+      - ./media/movies:/media/movies
+      - ./media/tv:/media/tv
+    ports:
+      - "8096:8096"
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Europe/Paris
+      - WEBUI_PORT=8888
+    volumes:
+      - ./qbittorrent:/config
+      - ./media/downloads:/downloads
+    ports:
+      - "8888:8888"
+      - "6881:6881"
+      - "6881:6881/udp"
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Europe/Paris
+    volumes:
+      - ./sonarr:/config
+      - ./media/tv:/tv
+      - ./media/downloads:/downloads
+    ports:
+      - "8989:8989"
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Europe/Paris
+    volumes:
+      - ./radarr:/config
+      - ./media/movies:/movies
+      - ./media/downloads:/downloads
+    ports:
+      - "7878:7878"
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Europe/Paris
+    volumes:
+      - ./prowlarr:/config
+    ports:
+      - "9696:9696"
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr
+    container_name: bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=Europe/Paris
+    volumes:
+      - ./bazarr:/config
+      - ./media/movies:/movies
+      - ./media/tv:/tv
+    ports:
+      - "6767:6767"
+    restart: unless-stopped
