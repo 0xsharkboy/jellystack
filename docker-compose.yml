@@ -4,8 +4,8 @@ services:
     container_name: jellyfin
     volumes:
       - ./jellyfin:/config
-      - ./media/movies:/media/movies
-      - ./media/tv:/media/tv
+      - ${MEDIA_FOLDER}/movies:/media/movies
+      - ${MEDIA_FOLDER}/tv:/media/tv
     ports:
       - "8096:8096"
     restart: unless-stopped
@@ -19,7 +19,7 @@ services:
       - .env
     volumes:
       - ./qbittorrent:/config
-      - ./media/downloads:/downloads
+      - ${MEDIA_FOLDER}/downloads:/downloads
     ports:
       - "8888:8888"
       - "6881:6881"
@@ -33,8 +33,8 @@ services:
       - .env
     volumes:
       - ./sonarr:/config
-      - ./media/tv:/tv
-      - ./media/downloads:/downloads
+      - ${MEDIA_FOLDER}/tv:/tv
+      - ${MEDIA_FOLDER}/downloads:/downloads
     ports:
       - "8989:8989"
     restart: unless-stopped
@@ -46,8 +46,8 @@ services:
       - .env
     volumes:
       - ./radarr:/config
-      - ./media/movies:/movies
-      - ./media/downloads:/downloads
+      - ${MEDIA_FOLDER}/movies:/movies
+      - ${MEDIA_FOLDER}/downloads:/downloads
     ports:
       - "7878:7878"
     restart: unless-stopped
@@ -70,8 +70,8 @@ services:
       - .env
     volumes:
       - ./bazarr:/config
-      - ./media/movies:/movies
-      - ./media/tv:/tv
+      - ${MEDIA_FOLDER}/movies:/movies
+      - ${MEDIA_FOLDER}/tv:/tv
     ports:
       - "6767:6767"
     restart: unless-stopped
