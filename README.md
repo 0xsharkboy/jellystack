@@ -47,6 +47,7 @@ jellystack/
    PUID=1000
    PGID=1000
    TZ=Europe/Paris
+   MEDIA_FOLDER=./media
    ```
 
 3. **Make `start.sh` executable**:
