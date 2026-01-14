@@ -39,6 +39,32 @@ services:
       - "8989:8989"
     restart: unless-stopped
 
+  lidarr:
+    image: lscr.io/linuxserver/lidarr
+    container_name: lidarr
+    env_file:
+      - .env
+    volumes:
+      - ./lidarr:/config
+      - ${MEDIA_FOLDER}/music:/music
+      - ${MEDIA_FOLDER}/downloads:/downloads
+    ports:
+      - "8686:8686"
+    restart: unless-stopped
+
+  whisparr:
+    image: hotio/whisparr:v3
+    container_name: whisparr
+    env_file:
+      - .env
+    volumes:
+      - ./whisparr:/config
+      - ${MEDIA_FOLDER}/paff:/paff
+      - ${MEDIA_FOLDER}/downloads:/downloads
+    ports:
+      - "6969:6969"
+    restart: unless-stopped
+
   radarr:
     image: lscr.io/linuxserver/radarr
     container_name: radarr

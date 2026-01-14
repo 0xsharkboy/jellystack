@@ -1,6 +1,6 @@
 # Jellystack
 
-**Jellystack** is a fully containerized and automated media server stack using Docker Compose. It brings together powerful tools like Jellyfin, qBittorrent, Sonarr, Radarr, Prowlarr, and Bazarr — with built-in support for I2P via i2pd for anonymous torrenting.
+**Jellystack** is a fully containerized and automated media server stack using Docker Compose. It brings together powerful tools like Jellyfin, qBittorrent, Sonarr, Radarr, Lidarr, Whisparr, Prowlarr, and Bazarr — with built-in support for I2P via i2pd for anonymous torrenting.
 
 ## Features
 
@@ -10,6 +10,8 @@
 - **Radarr** – Movie management and automation
 - **Prowlarr** – Indexer manager for Sonarr and Radarr
 - **Bazarr** – Subtitle downloader for your media library
+- **Whisparr** – "Movie" downloader for your media library
+- **Lidarr** – Music downloader for your media library
 - **i2pd** – I2P daemon used as a proxy for qBittorrent
 
 ## Folder Structure
@@ -23,6 +25,8 @@ jellystack/
 ├── jellyfin/
 ├── qbittorrent/
 ├── sonarr/
+├── lidarr/
+├── whisparr/
 ├── radarr/
 ├── prowlarr/
 ├── bazarr/
@@ -30,6 +34,8 @@ jellystack/
 └── media/
     ├── downloads/      # Where qBittorrent downloads go
     ├── movies/         # Where Radarr stores movies
+    ├── paff/           # Where Whisparr stores movies
+    ├── music/          # Where Lidarr stores musics
     └── tv/             # Where Sonarr stores TV shows
 ```
 
@@ -70,6 +76,8 @@ jellystack/
 | qBittorrent | 8888                      |
 | Sonarr      | 8989                      |
 | Radarr      | 7878                      |
+| Lidarr      | 8686                      |
+| Whisparr    | 6969                      |
 | Prowlarr    | 9696                      |
 | Bazarr      | 6767                      |
 | i2pd        | 7656                      |
@@ -91,6 +99,8 @@ This stack builds on the work of many amazing open-source projects:
 * [qBittorrent](https://www.qbittorrent.org/)
 * [Sonarr](https://sonarr.tv/)
 * [Radarr](https://radarr.video/)
+* [Whisparr](https://whisparr.com/)
+* [Lidarr](https://lidarr.audio/)
 * [Prowlarr](https://prowlarr.com/)
 * [Bazarr](https://www.bazarr.media/)
 * [i2pd](https://github.com/PurpleI2P/i2pd)
