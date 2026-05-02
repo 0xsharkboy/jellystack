@@ -2,26 +2,28 @@ services:
   jellyfin:
     image: jellyfin/jellyfin
     container_name: jellyfin
+    environment:
+      - JELLYFIN_HttpPort=${JELLYFIN_HTTP_PORT}
     volumes:
       - jellyfin_config:/config
       - ${MEDIA_FOLDER}:/data
     ports:
-      - "8096:8096"
+      - "${JELLYFIN_HTTP_PORT}:${JELLYFIN_HTTP_PORT}"
     restart: unless-stopped
 
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent
     container_name: qbittorrent
     environment:
-      - WEBUI_PORT=8888
-      - TORRENTING_PORT=6881
+      - WEBUI_PORT=${QBITTORRENT_WEBUI_PORT:-8888}
+      - TORRENTING_PORT=${QBITTORRENT_TORRENTING_PORT:-6881}
     volumes:
       - qbittorrent_config:/config
       - ${MEDIA_FOLDER}:/data
     ports:
-      - "8888:8888"
-      - "6881:6881"
-      - "6881:6881/udp"
+      - "${QBITTORRENT_WEBUI_PORT:-8888}:${QBITTORRENT_WEBUI_PORT:-8888}"
+      - "${QBITTORRENT_TORRENTING_PORT:-6881}:${QBITTORRENT_TORRENTING_PORT:-6881}"
+      - "${QBITTORRENT_TORRENTING_PORT:-6881}:${QBITTORRENT_TORRENTING_PORT:-6881}/udp"
     networks:
       - media_network
       - i2p_network
@@ -34,7 +36,7 @@ services:
       - sonarr_config:/config
       - ${MEDIA_FOLDER}:/data
     ports:
-      - "8989:8989"
+      - "${SONARR_PORT:-8989}:8989"
     networks:
       - media_network
     restart: unless-stopped
@@ -46,7 +48,7 @@ services:
       - radarr_config:/config
       - ${MEDIA_FOLDER}:/data
     ports:
-      - "7878:7878"
+      - "${RADARR_PORT:-7878}:7878"
     networks:
       - media_network
     restart: unless-stopped
@@ -57,7 +59,7 @@ services:
     volumes:
       - prowlarr_config:/config
     ports:
-      - "9696:9696"
+      - "${PROWLARR_PORT:-9696}:9696"
     networks:
       - media_network
     restart: unless-stopped
@@ -69,7 +71,7 @@ services:
       - bazarr_config:/config
       - ${MEDIA_FOLDER}:/data
     ports:
-      - "6767:6767"
+      - "${BAZARR_PORT:-6767}:6767"
     networks:
       - media_network
     restart: unless-stopped
