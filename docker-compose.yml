@@ -3,9 +3,8 @@ services:
     image: jellyfin/jellyfin
     container_name: jellyfin
     volumes:
-      - ./jellyfin:/config
-      - ${MEDIA_FOLDER}/movies:/media/movies
-      - ${MEDIA_FOLDER}/tv:/media/tv
+      - jellyfin_config:/config
+      - ${MEDIA_FOLDER}:/data
     ports:
       - "8096:8096"
     restart: unless-stopped
@@ -15,73 +14,74 @@ services:
     container_name: qbittorrent
     environment:
       - WEBUI_PORT=8888
-    env_file:
-      - .env
     volumes:
-      - ./qbittorrent:/config
-      - ${MEDIA_FOLDER}/downloads:/downloads
+      - qbittorrent_config:/config
+      - ${MEDIA_FOLDER}:/data
     ports:
       - "8888:8888"
       - "6881:6881"
       - "6881:6881/udp"
+    networks:
+      - media_network
+      - i2p_network
     restart: unless-stopped
 
   sonarr:
     image: lscr.io/linuxserver/sonarr
     container_name: sonarr
-    env_file:
-      - .env
     volumes:
-      - ./sonarr:/config
-      - ${MEDIA_FOLDER}/tv:/tv
-      - ${MEDIA_FOLDER}/downloads:/downloads
+      - sonarr_config:/config
+      - ${MEDIA_FOLDER}:/data
     ports:
       - "8989:8989"
+    networks:
+      - media_network
     restart: unless-stopped
 
   radarr:
     image: lscr.io/linuxserver/radarr
     container_name: radarr
-    env_file:
-      - .env
     volumes:
-      - ./radarr:/config
-      - ${MEDIA_FOLDER}/movies:/movies
-      - ${MEDIA_FOLDER}/downloads:/downloads
+      - radarr_config:/config
+      - ${MEDIA_FOLDER}:/data
     ports:
       - "7878:7878"
+    networks:
+      - media_network
     restart: unless-stopped
 
   prowlarr:
     image: lscr.io/linuxserver/prowlarr
     container_name: prowlarr
-    env_file:
-      - .env
     volumes:
-      - ./prowlarr:/config
+      - prowlarr_config:/config
     ports:
       - "9696:9696"
+    networks:
+      - media_network
     restart: unless-stopped
 
   bazarr:
     image: lscr.io/linuxserver/bazarr
     container_name: bazarr
-    env_file:
-      - .env
     volumes:
-      - ./bazarr:/config
-      - ${MEDIA_FOLDER}/movies:/movies
-      - ${MEDIA_FOLDER}/tv:/tv
+      - bazarr_config:/config
+      - ${MEDIA_FOLDER}:/data
     ports:
       - "6767:6767"
+    networks:
+      - media_network
     restart: unless-stopped
 
-  i2pd:
-    image: purplei2p/i2pd
-    container_name: i2pd
-    volumes:
-      - ./i2pd:/var/lib/i2pd
-      - ./i2pd/i2pd.conf:/etc/i2pd/i2pd.conf:ro
-    ports:
-      - "7656:7656"
-    restart: unless-stopped
+networks:
+  media_network:
+  i2p_network:
+    external: true
+
+volumes:
+  jellyfin_config:
+  qbittorrent_config:
+  sonarr_config:
+  radarr_config:
+  prowlarr_config:
+  bazarr_config:

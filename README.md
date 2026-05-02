@@ -10,7 +10,8 @@
 - **Radarr** – Movie management and automation
 - **Prowlarr** – Indexer manager for Sonarr and Radarr
 - **Bazarr** – Subtitle downloader for your media library
-- **i2pd** – I2P daemon used as a proxy for qBittorrent
+- **i2pd** – I2P daemon used as a proxy for qBittorrent (isolated stack)
+- **Network Isolation** – Restricted communication between services via dedicated Docker networks
 
 ## Folder Structure
 
@@ -18,16 +19,11 @@
 jellystack/
 │
 ├── .env                # Environment file with PUID, PGID and TZ
-├── docker-compose.yml  # Main Docker Compose file
-├── start.sh            # Startup script (chown + docker-compose up)
-├── jellyfin/
-├── qbittorrent/
-├── sonarr/
-├── radarr/
-├── prowlarr/
-├── bazarr/
+├── docker-compose.yml  # Main media stack configuration
 ├── i2pd/
-└── media/
+│   ├── i2pd.conf       # i2pd configuration (read-only bind)
+│   └── docker-compose.yml # i2pd dedicated stack
+└── media/              # Media storage (local bind)
     ├── downloads/      # Where qBittorrent downloads go
     ├── movies/         # Where Radarr stores movies
     └── tv/             # Where Sonarr stores TV shows
@@ -41,7 +37,7 @@ jellystack/
    cd jellystack
    ```
 
-2. **Edit the `.env` file to define your user and group ID and your timezone**:
+2. **Edit the `.env` file**: Define your user and group ID, timezone, and media storage path.
 
    ```env
    PUID=1000
@@ -50,20 +46,34 @@ jellystack/
    MEDIA_FOLDER=./media
    ```
 
-3. **Make `start.sh` executable**:
-
+3. **Create the I2P network**:
    ```bash
-   chmod +x start.sh
+   docker network create i2p_network
    ```
 
-4. **Start the stack**:
-
+4. **Start the stacks**:
+   Start the I2P daemon first, followed by the main media stack:
    ```bash
-   ./start.sh
-   ```
+   docker-compose -f i2pd/docker-compose.yml up -d
+       docker-compose up -d
+      ```
 
-## Ports
+   ## Hardlinks Configuration
 
+   To enable hardlinking (zero-copy moves) and save disk space, all media services now share a single `/data` mount point. You **must** update the internal paths in each application's Web UI:
+
+   | Application | Setting | New Path |
+   |-------------|---------|----------|
+   | **qBittorrent** | Default Save Path | `/data/downloads` |
+   | **Sonarr** | Root Folder | `/data/tv` |
+   | **Radarr** | Root Folder | `/data/movies` |
+   | **Jellyfin** | Library Paths | `/data/movies` and `/data/tv` |
+   | **Bazarr** | Root Folder | `/data/movies` and `/data/tv` |
+
+   > [!IMPORTANT]  
+   > If you have existing data, you may need to move your files within the `/data` subfolders (`downloads`, `movies`, `tv`) to match these paths and trigger the hardlinking behavior.
+
+   ## Ports
 | Service     | Port                      |
 | ----------- | ------------------------- |
 | Jellyfin    | 8096                      |

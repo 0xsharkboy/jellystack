@@ -1,16 +1,17 @@
 #!/usr/bin/bash
 
-# Import .env file
-if [ -f .env ]
+# Check for .env file
+if [ ! -f .env ]
 then
-    echo "Importing .env..."
-    export $(cat .env | xargs)
-else
-    echo "Please create .env file before xecuting this script"
+    echo "Please create .env file before executing this script"
     exit 1
 fi
 
+# Create i2p network
+docker network create i2p_network 2>/dev/null || true
+
 # Start containers
+docker-compose -f i2pd/docker-compose.yml up -d
 docker-compose up -d
 
 # Set owner
