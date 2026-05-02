@@ -14,6 +14,7 @@ services:
     container_name: qbittorrent
     environment:
       - WEBUI_PORT=8888
+      - TORRENTING_PORT=6881
     volumes:
       - qbittorrent_config:/config
       - ${MEDIA_FOLDER}:/data
