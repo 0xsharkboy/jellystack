@@ -75,6 +75,16 @@ services:
       - media_network
     restart: unless-stopped
 
+  seerr:
+    image: seerr/seerr
+    container_name: seerr
+    init: true
+    volumes:
+      - seerr_config:/app/config
+    ports:
+      - "${SEERR_PORT:-5055}:5055"
+    restart: unless-stopped
+
 networks:
   media_network:
 
@@ -85,3 +95,4 @@ volumes:
   radarr_config:
   prowlarr_config:
   bazarr_config:
+  seerr_config:
