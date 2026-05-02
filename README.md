@@ -1,16 +1,15 @@
 # Jellystack
 
-**Jellystack** is a fully containerized and automated media server stack using Docker Compose. It brings together powerful tools like Jellyfin, qBittorrent, Sonarr, Radarr, Prowlarr, and Bazarr — with built-in support for I2P via i2pd for anonymous torrenting.
+**Jellystack** is a fully containerized and automated media server stack using Docker Compose. It brings together powerful tools like Jellyfin, qBittorrent, Sonarr, Radarr, Prowlarr, and Bazarr.
 
 ## Features
 
 - **Jellyfin** – Media server for streaming movies and TV shows
-- **qBittorrent** – Torrent client with Web UI on port `8888`
+- **qBittorrent** – Torrent client with Web UI
 - **Sonarr** – Automatic TV show downloads and organization
 - **Radarr** – Movie management and automation
 - **Prowlarr** – Indexer manager for Sonarr and Radarr
 - **Bazarr** – Subtitle downloader for your media library
-- **i2pd** – I2P daemon used as a proxy for qBittorrent (isolated stack)
 - **Network Isolation** – Restricted communication between services via dedicated Docker networks
 
 ## Folder Structure
@@ -20,9 +19,6 @@ jellystack/
 │
 ├── .env                # Environment file with PUID, PGID and TZ
 ├── docker-compose.yml  # Main media stack configuration
-├── i2pd/
-│   ├── i2pd.conf       # i2pd configuration (read-only bind)
-│   └── docker-compose.yml # i2pd dedicated stack
 └── media/              # Media storage (local bind)
     ├── downloads/      # Where qBittorrent downloads go
     ├── movies/         # Where Radarr stores movies
@@ -46,17 +42,10 @@ jellystack/
    MEDIA_FOLDER=./media
    ```
 
-3. **Create the I2P network**:
+3. **Start the stack**:
    ```bash
-   docker network create i2p_network
+   docker-compose up -d
    ```
-
-4. **Start the stacks**:
-   Start the I2P daemon first, followed by the main media stack:
-   ```bash
-   docker-compose -f i2pd/docker-compose.yml up -d
-       docker-compose up -d
-      ```
 
    ## Hardlinks Configuration
 
@@ -105,6 +94,19 @@ This stack builds on the work of many amazing open-source projects:
 * [Bazarr](https://www.bazarr.media/)
 * [i2pd](https://github.com/PurpleI2P/i2pd)
 * [linuxserver.io](https://www.linuxserver.io/) for providing most of the container images used in this project
+
+Special thanks to the contributors and communities behind these projects.
+
+---
+
+Built with love and torrents.
+s://www.qbittorrent.org/)
+* [Sonarr](https://sonarr.tv/)
+* [Radarr](https://radarr.video/)
+* [Prowlarr](https://prowlarr.com/)
+* [Bazarr](https://www.bazarr.media/)
+* [linuxserver.io](https://www.linuxserver.io/) for providing most of the container images used in this project
+
 
 Special thanks to the contributors and communities behind these projects.
 

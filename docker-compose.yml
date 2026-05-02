@@ -26,7 +26,6 @@ services:
       - "${QBITTORRENT_TORRENTING_PORT:-6881}:${QBITTORRENT_TORRENTING_PORT:-6881}/udp"
     networks:
       - media_network
-      - i2p_network
     restart: unless-stopped
 
   sonarr:
@@ -78,8 +77,6 @@ services:
 
 networks:
   media_network:
-  i2p_network:
-    external: true
 
 volumes:
   jellyfin_config:
