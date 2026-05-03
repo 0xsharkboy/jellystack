@@ -9,6 +9,8 @@ services:
       - ${MEDIA_FOLDER}:/data
     ports:
       - "${JELLYFIN_HTTP_PORT}:${JELLYFIN_HTTP_PORT}"
+    networks:
+      - jellyfin_network
     restart: unless-stopped
 
   qbittorrent:
@@ -25,7 +27,7 @@ services:
       - "${QBITTORRENT_TORRENTING_PORT:-6881}:${QBITTORRENT_TORRENTING_PORT:-6881}"
       - "${QBITTORRENT_TORRENTING_PORT:-6881}:${QBITTORRENT_TORRENTING_PORT:-6881}/udp"
     networks:
-      - media_network
+      - arr_network
     restart: unless-stopped
 
   sonarr:
@@ -37,7 +39,7 @@ services:
     ports:
       - "${SONARR_PORT:-8989}:8989"
     networks:
-      - media_network
+      - arr_network
     restart: unless-stopped
 
   radarr:
@@ -49,7 +51,7 @@ services:
     ports:
       - "${RADARR_PORT:-7878}:7878"
     networks:
-      - media_network
+      - arr_network
     restart: unless-stopped
 
   prowlarr:
@@ -60,7 +62,7 @@ services:
     ports:
       - "${PROWLARR_PORT:-9696}:9696"
     networks:
-      - media_network
+      - arr_network
     restart: unless-stopped
 
   bazarr:
@@ -72,7 +74,7 @@ services:
     ports:
       - "${BAZARR_PORT:-6767}:6767"
     networks:
-      - media_network
+      - arr_network
     restart: unless-stopped
 
   seerr:
@@ -83,10 +85,14 @@ services:
       - seerr_config:/app/config
     ports:
       - "${SEERR_PORT:-5055}:5055"
+    networks:
+      - arr_network
+      - jellyfin_network
     restart: unless-stopped
 
 networks:
-  media_network:
+  arr_network:
+  jellyfin_network:
 
 volumes:
   jellyfin_config:
